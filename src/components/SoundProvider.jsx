@@ -1,23 +1,28 @@
 import React,{createContext,useCallback,useContext,useEffect,useMemo,useRef,useState} from 'react';
+import {playGiftFoley} from './giftSounds';
 
 // Add one licensed, loop-ready instrumental with this basename; no remote requests.
 const tracks=import.meta.glob('../data/background-music.{mp3,m4a,ogg,wav}',{eager:true,query:'?url',import:'default'});
 const soundtrack=Object.values(tracks)[0];
 const SoundContext=createContext(null);
 export const useSound=()=>useContext(SoundContext);
+const musicLevel=state=>state.ducked?Math.min(state.volume*.12,.025):state.volume;
 
 export function SoundProvider({children}) {
-  const [enabled,setEnabled]=useState(true),[volume,setVolume]=useState(1),[armed,setArmed]=useState(false),[playing,setPlaying]=useState(false),[videoActive,setVideoActive]=useState(false),[chimes,setChimes]=useState(0);
-  const engine=useRef({enabled:true,volume:1,armed:false,video:false,audio:null,context:null,fade:0,seen:new Set(),lastChime:-Infinity,lastMove:-Infinity,lastScroll:-Infinity});
+  const [enabled,setEnabled]=useState(true),[volume,setVolume]=useState(.5),[armed,setArmed]=useState(false),[playing,setPlaying]=useState(false),[videoActive,setVideoActive]=useState(false),[chimes,setChimes]=useState(0),[ducked,setDucked]=useState(false);
+  const engine=useRef({enabled:true,volume:.5,armed:false,video:false,ducked:false,audio:null,context:null,fade:0,seen:new Set(),lastChime:-Infinity,lastMove:-Infinity,lastScroll:-Infinity});
   const music=useRef(null);
-  const fadeMusic=useCallback((target)=>{
+  const effects=useRef(new Set());
+  const duckTimer=useRef(null);
+  const [giftSounds,setGiftSounds]=useState(0);
+  const fadeMusic=useCallback((target,duration=1100)=>{
     const state=engine.current,audio=state.audio;
     cancelAnimationFrame(state.fade);
     if(!audio)return;
     const start=performance.now(),from=audio.volume;
     const step=time=>{
-      audio.volume=Math.max(0,Math.min(1,from+(target-from)*Math.min(1,(time-start)/1100)));
-      if(time-start<1100)state.fade=requestAnimationFrame(step);
+      audio.volume=Math.max(0,Math.min(1,from+(target-from)*Math.min(1,(time-start)/duration)));
+      if(time-start<duration)state.fade=requestAnimationFrame(step);
       else if(target===0){audio.pause();setPlaying(false);}
     };
     state.fade=requestAnimationFrame(step);
@@ -27,40 +32,76 @@ export function SoundProvider({children}) {
     if(!state.audio||!state.armed||!state.enabled||state.video)return;
     // The first play happens inside the explicit click handler.
     const promise=state.audio.play();
-    promise?.then(()=>{if(state.enabled&&!state.video){setPlaying(true);fadeMusic(state.volume);}else{state.audio.pause();setPlaying(false);}}).catch(()=>setPlaying(false));
+    promise?.then(()=>{if(state.enabled&&!state.video){setPlaying(true);fadeMusic(musicLevel(state),state.ducked?100:1100);}else{state.audio.pause();setPlaying(false);}}).catch(()=>setPlaying(false));
   },[fadeMusic]);
   const beginExperience=useCallback(()=>{
     const state=engine.current;
     state.armed=true;setArmed(true);
+    state.gesture=true;
     const AudioContext=window.AudioContext||window.webkitAudioContext;
     if(AudioContext&&!state.context)state.context=new AudioContext();
     if(state.context?.state==='suspended')state.context.resume().catch(()=>{});
     if(soundtrack&&!state.audio){state.audio=music.current;state.audio.volume=0;}
     resumeMusic();
   },[resumeMusic]);
+  const giftSound=useCallback(stage=>{
+    beginExperience();
+    const state=engine.current;
+    const play=()=>{
+      if(!state.enabled||state.video||state.volume===0||state.context?.state!=='running')return;
+      clearTimeout(duckTimer.current);state.ducked=true;setDucked(true);
+      fadeMusic(musicLevel(state),100);
+      // Foley has its own gentle level, so lowering the music does not hide it.
+      playGiftFoley(state.context,stage,Math.min(1,state.volume/.2),source=>{
+        effects.current.add(source);source.addEventListener('ended',()=>effects.current.delete(source),{once:true});
+      });
+      setGiftSounds(value=>value+1);
+      duckTimer.current=setTimeout(()=>{
+        state.ducked=false;setDucked(false);
+        if(state.enabled&&!state.video)resumeMusic();
+      },stage===1?1550:stage===2?1800:1450);
+    };
+    if(state.context?.state==='suspended')state.context.resume().then(play).catch(()=>{});else play();
+  },[beginExperience,fadeMusic,resumeMusic]);
+  useEffect(()=>{
+    if(!soundtrack)return;
+    const state=engine.current,player=music.current;let active=true;
+    state.audio=player;player.currentTime=0;player.volume=state.volume;
+    // Try audible playback honestly; blocked browsers keep the first-tap path.
+    player.play()?.then(()=>{
+      if(!active||state.gesture)return;
+      if(!state.enabled||state.video){player.pause();return;}
+      state.armed=true;setArmed(true);setPlaying(true);player.volume=0;fadeMusic(musicLevel(state));
+    }).catch(()=>{if(active&&!state.gesture){player.volume=0;setPlaying(false);}});
+    return()=>{active=false;};
+  },[fadeMusic]);
   const giveVideoPriority=useCallback(()=>{
     const state=engine.current;
     state.video=true;setVideoActive(true);
+    clearTimeout(duckTimer.current);state.ducked=false;setDucked(false);
+    for(const source of effects.current)source.stop();
     cancelAnimationFrame(state.fade);
     // Pause synchronously so dialogue can never overlap the soundtrack.
     if(state.audio){state.audio.pause();state.audio.volume=0;}setPlaying(false);
   },[]);
-  const releaseVideoPriority=useCallback(()=>{
-    engine.current.video=false;setVideoActive(false);resumeMusic();
+  const releaseVideoPriority=useCallback(({restart=false}={})=>{
+    const state=engine.current;
+    if(restart&&state.audio)state.audio.currentTime=0;
+    state.video=false;setVideoActive(false);resumeMusic();
   },[resumeMusic]);
   useEffect(()=>{
-    const firstClick=event=>{if(event.isTrusted&&!engine.current.armed)beginExperience();};
+    const firstClick=event=>{if(event.isTrusted&&!engine.current.gesture)beginExperience();};
     document.addEventListener('click',firstClick);
     return()=>document.removeEventListener('click',firstClick);
   },[beginExperience]);
   const toggleSound=()=>{
     const state=engine.current,next=!state.enabled;
     state.enabled=next;setEnabled(next);
-    if(next){beginExperience();}else{fadeMusic(0);state.context?.suspend().catch(()=>{});}
+    if(next){beginExperience();}else{fadeMusic(0);for(const source of effects.current)source.stop();state.context?.suspend().catch(()=>{});}
   };
   const changeVolume=event=>{
     const value=Number(event.target.value);engine.current.volume=value;setVolume(value);
-    if(engine.current.enabled&&!engine.current.video){if(value>0&&engine.current.audio?.paused)resumeMusic();else fadeMusic(value);}
+    if(engine.current.enabled&&!engine.current.video){if(value>0&&engine.current.audio?.paused)resumeMusic();else fadeMusic(musicLevel(engine.current),engine.current.ducked?100:1100);}
   };
   const photoChime=useCallback((id,event)=>{
     const state=engine.current,time=performance.now();
@@ -84,11 +125,11 @@ export function SoundProvider({children}) {
     const move=event=>{if(event.pointerType==='mouse')engine.current.lastMove=performance.now();};
     const scroll=()=>{engine.current.lastScroll=performance.now();};
     document.addEventListener('pointermove',move,{passive:true});window.addEventListener('scroll',scroll,{passive:true});
-    return()=>{document.removeEventListener('pointermove',move);window.removeEventListener('scroll',scroll);cancelAnimationFrame(engine.current.fade);engine.current.audio?.pause();engine.current.context?.close();};
+    return()=>{document.removeEventListener('pointermove',move);window.removeEventListener('scroll',scroll);clearTimeout(duckTimer.current);cancelAnimationFrame(engine.current.fade);for(const source of effects.current)source.stop();engine.current.audio?.pause();engine.current.context?.close();};
   },[]);
-  const actions=useMemo(()=>({beginExperience,giveVideoPriority,releaseVideoPriority,photoChime}),[beginExperience,giveVideoPriority,releaseVideoPriority,photoChime]);
-  return <SoundContext.Provider value={actions}>{children}{soundtrack&&<audio ref={music} src={soundtrack} preload="none" loop aria-label="Gentle birthday background music"/>}<aside className="sound-control" aria-label="Birthday sound controls" data-sound-armed={armed} data-chimes-played={chimes} data-video-priority={videoActive}>
-    <button onClick={()=>{if(!armed&&enabled)beginExperience();else toggleSound();}} aria-pressed={enabled&&armed} aria-label={!armed?'Turn on birthday sounds':enabled?'Mute birthday sounds':'Turn on birthday sounds'}><span aria-hidden="true">{enabled?'♫':'♪'}</span><span>{!armed?'Sound on':!enabled?'Sound off':videoActive?'Video sound':playing?'Music playing':'Soft chimes'}</span></button>
+  const actions=useMemo(()=>({beginExperience,giveVideoPriority,releaseVideoPriority,photoChime,giftSound}),[beginExperience,giveVideoPriority,releaseVideoPriority,photoChime,giftSound]);
+  return <SoundContext.Provider value={actions}>{children}{soundtrack&&<audio ref={music} src={soundtrack} preload="auto" loop aria-label="Gentle birthday background music"/>}<aside className="sound-control" aria-label="Birthday sound controls" data-sound-armed={armed} data-chimes-played={chimes} data-gift-sounds-played={giftSounds} data-music-ducked={ducked} data-video-priority={videoActive}>
+    <button onClick={()=>{if(!armed&&enabled)beginExperience();else toggleSound();}} aria-pressed={enabled&&armed} aria-label={!armed?'Turn on birthday sounds':enabled?'Mute birthday sounds':'Turn on birthday sounds'}><span aria-hidden="true">{enabled?'♫':'♪'}</span><span>{!armed?'Tap for music':!enabled?'Sound off':videoActive?'Video sound':playing?'Music playing':'Soft chimes'}</span></button>
     <label><span className="sr-only">Sound volume</span><input aria-label="Sound volume" type="range" min="0" max="1" step="0.01" value={volume} onChange={changeVolume} aria-valuetext={`${Math.round(volume*100)} percent`}/></label>
     {soundtrack&&<a className="music-credit-link" href="music-credits.html" target="_blank" rel="noreferrer" aria-label="Background music credits">Credits</a>}
   </aside></SoundContext.Provider>;

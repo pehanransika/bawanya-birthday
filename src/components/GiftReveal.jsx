@@ -14,9 +14,10 @@ export const denimMessage=[
 
 export default function GiftReveal({onCelebrate,celebration}) {
   const [stage,setStage]=useState(0),[busy,setBusy]=useState(false);
-  const timer=useRef(null),started=useRef(false),voucher=useRef(null);
-  const {beginExperience}=useSound();
+  const timer=useRef(null),stageRef=useRef(0),moving=useRef(false),voucher=useRef(null),gift=useRef(null);
+  const {giftSound}=useSound();
   useEffect(()=>()=>clearTimeout(timer.current),[]);
+  useEffect(()=>{if(stage>0&&stage<3&&!busy)gift.current?.focus({preventScroll:true});},[stage,busy]);
   const settle=()=>{
     setBusy(false);onCelebrate();voucher.current?.focus({preventScroll:true});
     const frame=voucher.current?.querySelector('.voucher-flip')?.getBoundingClientRect();
@@ -24,21 +25,23 @@ export default function GiftReveal({onCelebrate,celebration}) {
     if(frame){const top=Math.min(frame.top,bear?.top??frame.top);const height=frame.bottom-top;const showGroup=height<innerHeight-24;window.scrollTo({top:scrollY+(showGroup?top:frame.top)-Math.max(16,(innerHeight-(showGroup?height:frame.height))/2),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
   };
   const unwrap=()=>{
-    if(started.current)return;started.current=true;beginExperience();setBusy(true);setStage(1);
+    if(moving.current||stageRef.current>=3)return;
+    moving.current=true;const next=stageRef.current+1;stageRef.current=next;
+    giftSound(next);setBusy(true);setStage(next);
     const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     timer.current=setTimeout(()=>{
-      setStage(2);
-      timer.current=setTimeout(()=>{
-        setStage(3);timer.current=setTimeout(settle,reduced?0:1450);
-      },reduced?0:1800);
-    },reduced?0:1550);
+      moving.current=false;
+      if(next===3)settle();else{setBusy(false);gift.current?.focus({preventScroll:true});}
+    },reduced?0:next===1?1550:next===2?1800:1450);
   };
+  const prompts=['Tap to untie the ribbon! 🎀','Ribbon’s off! Tap again to unwrap it! 👀','One last tap for your little gift! 🎁'];
+  const movingPrompts=['','Untying the ribbon... ♡','Unwrapping your little present... 💗','Your little gift is here! 💗'];
   return <div className={`gift-reveal gift-stage--${stage} ${busy?'gift-is-moving':''}`} data-gift-stage={stage}>
     <p className="eyebrow">THE LITTLE SOMETHING I PROMISED</p>
     <h2 className="gift-title">Okayyy B, here's your<br/><em>little surprise! 👀❤️</em></h2>
     <p className="gift-subtitle">Something you've been wanting for a whileee... Hehe.</p>
     <div className="gift-theatre">
-      <button className="gift-box-button" onClick={unwrap} disabled={started.current} aria-label="Tap the gift to unwrap it! 🎁" aria-hidden={stage===3} tabIndex={stage===3?-1:0}>
+      <button ref={gift} className="gift-box-button" onClick={unwrap} disabled={busy||stage===3} aria-label={prompts[stage]||'Your gift is open'} aria-hidden={stage===3} tabIndex={stage===3?-1:0}>
         <div className="gift-scene" aria-hidden="true">
           <div className="gift-glow"/><span className="gift-float-heart">♡</span><span className="gift-float-spark">✦</span>
           <div className="present"><div className="gift-tissue tissue--one"/><div className="gift-tissue tissue--two"/><div className="box-base"><span className="box-heart">♡</span></div><div className="box-ribbon ribbon--vertical"/><div className="box-ribbon ribbon--horizontal"/><div className="box-lid"><div className="lid-highlight"/><div className="gift-bow"><i/><i/><span/></div></div><div className="falling-wrap wrap--left"/><div className="falling-wrap wrap--right"/></div>
@@ -46,7 +49,7 @@ export default function GiftReveal({onCelebrate,celebration}) {
       </button>
       {stage<3&&<div className="gift-bear"><TeddyBear pose={stage===0?'gift':'wave'}/></div>}
     </div>
-    {stage<3&&<p className="gift-hint gift-opening-hint" role="status">{stage===0?'Tap the gift to unwrap it! 🎁':stage===1?'Untying the ribbon... ♡':'Unwrapping your little present... 💗'}</p>}
+    {stage<3&&<p className="gift-hint gift-opening-hint" role="status">{busy?movingPrompts[stage]:prompts[stage]}</p>}
     {stage===3&&<div className="voucher-reveal" ref={voucher} tabIndex={-1} aria-labelledby="voucher-title">
       <button className="gift-bear-button" onClick={onCelebrate} aria-label="Send a little birthday love"><TeddyBear pose="hug"/></button>
       <h3 id="voucher-title">MINTPAY GIFT VOUCHER <span className="voucher-value">LKR 6,100</span></h3>

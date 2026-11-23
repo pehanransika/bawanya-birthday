@@ -131,7 +131,7 @@ function BirthdayEnding({endingRef,onCelebrate,celebration}) {
     <div className="ending-glow" aria-hidden="true" />
     <Particles celebration />
     <div className="ending-content reveal">
-      <div className="birthday-keepsake"><h2 id="ending-title">For my B, <em>with all my love.</em></h2><p>Through all these little moments, all the smiles, all the places and all the memories, I'm grateful for every part of this journey with you.</p><p>Here's to making many more beautiful memories together.</p><p className="keepsake-wish">Happy Birthday, Bawanya! ❤️</p></div>
+      <div className="birthday-keepsake"><h2 id="ending-title">For my B, <em>with all my love.</em></h2><p>Through all these little moments, all the smiles, all the places and all the memories, I'm grateful for every part of this journey with you.</p><p>Here's to making many more beautiful memories together.</p><p className="keepsake-wish">Happy Birthday, Suduu! ❤️</p></div>
       <GiftReveal onCelebrate={onCelebrate} celebration={celebration}/>
     </div>
     {celebration>0&&<div key={celebration} className="confetti" aria-hidden="true">{Array.from({length:38},(_,i)=><i key={i} style={{'--x':`${(i*31+5)%100}%`,'--drift':`${(i%2?-1:1)*(25+i*3)}px`,'--delay':`${i*.035}s`,'--turn':`${i*47}deg`,'--colour':['#d987a3','#c8a366','#f3cbd1','#b59abb'][i%4]}} />)}</div>}

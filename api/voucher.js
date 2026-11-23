@@ -38,8 +38,8 @@ export function createVoucherHandler({root=process.cwd(),getConfig=()=>process.e
         let body;
         if(req.body!==undefined){const raw=typeof req.body==='string'?req.body:JSON.stringify(req.body);if(Buffer.byteLength(raw)>2048)return json(413,{error:'That password is too long.'});body=typeof req.body==='string'?JSON.parse(raw):req.body;}
         else {const chunks=[];let length=0;for await(const chunk of req){length+=Buffer.byteLength(chunk);if(length>2048)return json(413,{error:'That password is too long.'});chunks.push(Buffer.from(chunk));}body=JSON.parse(Buffer.concat(chunks).toString('utf8'));}
-        if(typeof body?.password!=='string'||body.password.length>256)return json(400,{error:'Please enter the private voucher password.'});
-        if(!same(digest(body.password),digest(password))){if(failures.size>=1024)failures.delete(failures.keys().next().value);failures.set(ip,{count:(attempts?.count||0)+1,until:attempts?.until||now()+15*60*1000});return json(401,{error:'That wasn’t the little password. Try again, sudu.'});}
+        if(typeof body?.password!=='string'||body.password.length>256)return json(400,{error:'Type my full name in lowercase with spaces, sudu.'});
+        if(!same(digest(body.password),digest(password))){if(failures.size>=1024)failures.delete(failures.keys().next().value);failures.set(ip,{count:(attempts?.count||0)+1,until:attempts?.until||now()+15*60*1000});return json(401,{error:'Aiyooo, that’s not my full name! Try again, sudu 😂💗'});}
         failures.delete(ip);
         const value=`${seconds+TTL}.${randomBytes(18).toString('base64url')}`;
         const local=/^(localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/.test(host);

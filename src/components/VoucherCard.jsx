@@ -48,9 +48,9 @@ export default function VoucherCard() {
             <img className="activation-qr" src="/api/voucher?asset=qr" alt="Your original Mintpay voucher activation QR code" width="654" height="649" onLoad={()=>setQrReady(true)} onError={expired}/>
             {qrReady&&<button className="download-voucher" onClick={download} disabled={downloading}>{downloading?'Getting your little gift ready...':'Download your voucher 📩'}</button>}
           </>:<form className="voucher-password" onSubmit={unlock}>
-            <p className="pass-copy">A tiny secret, just between us.<br/>Use the password I shared with you, sudu. ♡</p>
-            <label htmlFor="voucher-password">Your little password</label>
-            <input ref={input} id="voucher-password" type="password" autoComplete="off" maxLength={256} required value={password} onChange={event=>setPassword(event.target.value)} disabled={busy}/>
+            <p className="pass-copy">Wait waittt... can you remember my full name, huh? 👀💗<br/>If you want this gift, let's check that first!<br/>Type my full name in all simple letters, with spaces between the names.</p>
+            <label htmlFor="voucher-password">My full name, in lowercase</label>
+            <input ref={input} id="voucher-password" type="text" autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} placeholder="e.g. bawanya hasandi gunasekara" maxLength={256} required value={password} onChange={event=>setPassword(event.target.value)} disabled={busy}/>
             <button className="download-voucher" disabled={busy}>{busy?'Opening your little secret...':'Unlock my shopping pass 💗'}</button>
           </form>}
           {error&&<p className="voucher-error" role="alert">{error}</p>}
