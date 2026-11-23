@@ -1,0 +1,22 @@
+{
+  "1st march 2002.zip": {
+    "date": "2024-03-01",
+    "reason": "User confirmed that 2002 in the archive name should be 2024."
+  },
+  "6th nov at chicken depot.jpeg": {
+    "date": "2026-11-06",
+    "reason": "User confirmed the missing year is 2026."
+  },
+  "7th match 2026 at shiok port city trying dumplings and other.jpeg": {
+    "date": "2026-03-07",
+    "reason": "User confirmed that match means March."
+  },
+  "20th feb 2025 - tuk tuk ride to home.jpeg": {
+    "date": "2025-02-20",
+    "reason": "Corrected from 2024 to 2025 using the current source filename; SHA-256 matches the previous photograph exactly."
+  },
+  "20th feb 2025 - you brought those flowers to me.jpeg": {
+    "date": "2025-02-20",
+    "reason": "Corrected from 2024 to 2025 using the current source filename; SHA-256 matches the previous photograph exactly."
+  }
+}

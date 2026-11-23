@@ -1,0 +1,170 @@
+/* The supplied video and voucher remain untouched. All decoration is separate. */
+.birthday-app.at-ending .journey-progress{opacity:0;visibility:hidden}
+.video-surprise{padding:110px 6vw 120px;position:relative;text-align:center;scroll-margin-top:24px}
+.video-surprise-content{max-width:1000px;margin:auto;position:relative}
+.video-surprise:before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse,#edc6db44,transparent 70%);pointer-events:none}
+.video-surprise h2{font:400 clamp(43px,4.8vw,65px)/1.08 var(--serif);letter-spacing:-.025em;color:#764156;margin:24px 0 34px}
+.video-surprise h2 em{color:#b46782;font-weight:400}
+.envelope-scene{position:relative;max-width:480px;height:285px;margin:45px auto 33px;isolation:isolate}
+.surprise-envelope{position:absolute;width:260px;height:174px;left:28px;bottom:25px;perspective:900px;filter:drop-shadow(0 12px 14px #95697922)}
+.envelope-back{position:absolute;inset:0;background:#eabecb;border:1px solid #ba8299;border-radius:6px}
+.envelope-front{position:absolute;inset:0;z-index:3;background:#f8dce1;clip-path:polygon(0 0,50% 57%,100% 0,100% 100%,0 100%);border:1px solid #c48e9f;border-radius:5px}
+.envelope-front:after{content:'';position:absolute;left:0;right:0;bottom:0;height:70%;background:linear-gradient(32deg,#f2cbd6,transparent 50%),linear-gradient(-32deg,#fce8e8,transparent 50%)}
+.envelope-flap{position:absolute;inset:0 0 auto;height:102px;z-index:5;background:#eec6d4;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;border-top:1px solid #c48e9f}
+.envelope-letter{position:absolute;left:8%;top:8%;width:84%;height:85%;background:#fffaf0;border:1px solid #e7d5c0;border-radius:3px;display:grid;place-items:center;font:64px var(--serif);color:#b86c87;z-index:2}
+.envelope-seal{position:absolute;left:calc(50% - 21px);top:77px;width:42px;height:42px;border-radius:50%;background:#ba708e;border:3px double #e9bac8;color:#fff0ef;z-index:6;display:grid;place-items:center;font-size:20px}
+.envelope-bear{position:absolute;width:155px;right:14px;bottom:0;z-index:7;transform:rotate(4deg)}
+.tiny-bear-envelope{position:absolute;width:66px;left:44px;bottom:24px;transform:rotate(-7deg)}
+.scene-heart,.scene-spark{position:absolute;color:#bf809b;font:29px var(--hand);animation:envelope-love 4s ease-in-out infinite;pointer-events:none}
+.scene-heart--one{left:7%;top:15%}.scene-heart--two{right:22%;top:0;font-size:18px}.scene-spark{left:47%;top:12%;color:#b99b60}
+.video-phase--opening .surprise-envelope{animation:envelope-wiggle .5s ease-in-out}
+.video-phase--opening .envelope-flap{animation:flap-open .7s .4s forwards}
+.video-phase--opening .envelope-letter{animation:letter-emerge .75s .7s forwards}
+.video-phase--opening .envelope-seal{animation:seal-away .4s .35s forwards}
+.video-unsealed{animation:video-appear .85s both}
+.video-unsealed h2:focus{outline:none}
+.birthday-video-frame{padding:12px;background:#fffaf0;border:1px solid #c5a1a35e;box-shadow:0 20px 45px -25px #83536340;max-width:920px;margin:35px auto 27px;border-radius:7px}
+.birthday-video-frame video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;background:#21151b;border-radius:3px}
+.video-note,.video-finished>p{font:27px/1.3 var(--hand);color:#976678;margin:24px auto;max-width:620px}
+.video-finished{animation:video-appear .7s both}
+.memory-invitation{display:inline-flex;align-items:center;gap:10px;min-height:44px;border-bottom:1px solid #b87c9660;font-size:15px;color:#8d4968}
+.memory-invitation span{animation:heart-breathe 3s infinite;font-size:23px}
+.video-skip{display:block;width:fit-content;margin:25px auto 0;font-size:13px;color:#977584;text-decoration:underline;text-underline-offset:5px;padding:8px}
+.video-error{font-size:16px;line-height:1.6;color:#923c5f}
+.video-play{animation:none}
+.ending{padding:90px 6vw 100px;min-height:0}
+.ending-content{max-width:1100px}
+.birthday-keepsake{max-width:630px;margin:0 auto 115px;padding:0 10px}
+.birthday-keepsake h2{font-size:52px!important;line-height:1.1!important;margin-bottom:25px}
+.birthday-keepsake>p{font-size:16px;line-height:1.9;color:#805867;margin-bottom:18px}
+.birthday-keepsake .keepsake-wish{font:600 33px/1.25 var(--hand);color:#a95976;margin-top:25px}
+.gift-title{font-size:clamp(43px,5vw,68px)!important;margin-top:20px!important}
+.gift-subtitle{font:27px/1.3 var(--hand);color:#986b7a;margin:22px 0 0}
+.gift-theatre{position:relative;width:min(620px,100%);height:355px;margin:25px auto 30px;isolation:isolate}
+.gift-scene{position:absolute;left:10%;bottom:0;width:320px;height:310px;perspective:1000px}
+.gift-glow{position:absolute;inset:0 -50px -30px;background:radial-gradient(ellipse,#f4d29c6b,transparent 68%);border-radius:50%;z-index:-2;transition:opacity 1.4s,transform 1.4s}
+.present{position:absolute;left:23px;bottom:12px;width:270px;height:200px;transform:rotate(-3deg);perspective:800px}
+.box-base{position:absolute;bottom:0;width:100%;height:174px;border:1px solid #c98a9e;border-radius:2px 2px 8px 8px;background:linear-gradient(110deg,#f5cad7,#e8aec2 65%,#cf8da9);box-shadow:inset -15px 0 0 #aa698c12,0 17px 18px -15px #88615c70}
+.box-base:before{content:'';position:absolute;inset:7px 10px;border:1px solid #fff5;border-radius:3px}
+.box-heart{position:absolute;left:34px;bottom:30px;font:47px var(--serif);color:#fdf2e6}
+.box-lid{position:absolute;top:0;left:-12px;width:294px;height:43px;border:1px solid #ba8199;border-radius:6px;background:linear-gradient(#f4c9d5,#d795b1);box-shadow:0 7px 0 #a9658920;transform-origin:10% 100%;z-index:4;transition:transform 1.5s ease,opacity 1.5s ease}
+.lid-highlight{position:absolute;inset:4px 7px auto;height:1px;background:#fff8}
+.box-ribbon{position:absolute;background:linear-gradient(90deg,#c9a46c,#fff0bb 45%,#d9b274 88%);z-index:3;transition:transform 1.2s ease,opacity 1.2s ease}
+.ribbon--vertical{left:111px;bottom:0;width:43px;height:200px;transform-origin:top}
+.ribbon--horizontal{bottom:64px;height:27px;width:270px;background:linear-gradient(#fae4b4,#cfa26a);transform-origin:left}
+.gift-bow{position:absolute;left:88px;top:-58px;width:117px;height:65px;transform-origin:50% 100%;transition:transform 1.3s ease,opacity 1s ease}
+.gift-bow i{position:absolute;width:69px;height:46px;top:8px;border:8px solid #e7c28d;border-top-color:#f9e1b7;border-radius:65% 70% 25% 70%;box-shadow:inset 0 0 0 1px #bb8e5c;transform:rotate(29deg);left:0}
+.gift-bow i+i{left:49px;transform:scaleX(-1) rotate(29deg)}
+.gift-bow span{position:absolute;left:49px;top:32px;width:24px;height:25px;border-radius:9px;background:linear-gradient(90deg,#d9b279,#ffebbd,#c79b68)}
+.gift-tissue{position:absolute;width:155px;height:140px;left:75px;bottom:93px;background:#fff7eece;clip-path:polygon(0 15%,18% 0,35% 16%,53% 0,71% 14%,86% 0,100% 16%,93% 100%,8% 100%);transform:translateY(40px) rotate(-14deg);opacity:0;z-index:-1}
+.tissue--two{transform:translateY(40px) rotate(20deg);background:#efd5e6b3}
+.falling-wrap{position:absolute;bottom:10px;left:0;width:130px;height:165px;background:#f3bdcf;opacity:0;transform-origin:bottom right;z-index:1}
+.wrap--right{left:auto;right:0;transform-origin:bottom left;background:#e9a9c2}
+.gift-bear,.gift-bear-button{position:absolute;width:170px;right:0;bottom:0;z-index:5}
+.gift-bear-button{padding:0;border:0;background:none;border-radius:45%;cursor:pointer}
+.gift-bear-button:focus-visible{outline:2px dashed #ac6b87;outline-offset:6px}
+.gift-float-heart,.gift-float-spark{position:absolute;font:35px var(--serif);color:#be7b99;left:8px;top:17px;animation:envelope-love 5s infinite}
+.gift-float-spark{left:auto;right:5px;top:-10px;font-size:25px;color:#c0a16b;animation-delay:-2s}
+.gift-stage--1 .gift-bow,.gift-stage--2 .gift-bow,.gift-stage--3 .gift-bow{transform:translate(40px,165px) rotate(67deg) scale(.7);opacity:0}
+.gift-stage--1 .ribbon--vertical,.gift-stage--2 .ribbon--vertical,.gift-stage--3 .ribbon--vertical{transform:translate(-75px,155px) rotate(32deg) scaleX(.5);opacity:0}
+.gift-stage--1 .ribbon--horizontal,.gift-stage--2 .ribbon--horizontal,.gift-stage--3 .ribbon--horizontal{transform:translate(30px,110px) rotate(18deg);opacity:0}
+.gift-stage--1.gift-is-moving .present{animation:envelope-wiggle .65s ease-in-out}
+.gift-stage--2 .box-lid,.gift-stage--3 .box-lid{transform:translate(-45px,-92px) rotate(-27deg) rotateX(22deg);opacity:.3}
+.gift-stage--2.gift-is-moving .gift-tissue{animation:tissue-rise 1.8s ease-out forwards}
+.gift-stage--2.gift-is-moving .tissue--two{animation-delay:.16s}
+.gift-stage--2.gift-is-moving .wrap--left{animation:wrap-left 1.7s ease-out both}
+.gift-stage--2.gift-is-moving .wrap--right{animation:wrap-right 1.7s ease-out both}
+.gift-stage--2 .gift-glow,.gift-stage--3 .gift-glow{transform:scale(1.3);background:radial-gradient(ellipse,#f6cc7799,#e8a1c129,transparent 70%)}
+.gift-stage--3 .gift-theatre{height:210px;margin-bottom:-45px;transition:height .8s ease}
+.gift-stage--3 .gift-scene{left:calc(50% - 160px);transform:scale(.62);transform-origin:bottom center;opacity:.5}
+.gift-stage--3 .gift-bear-button{width:140px;right:7%;bottom:16px}
+.gift-actions{min-height:100px;position:relative}
+.gift-actions button:disabled{opacity:.75;cursor:wait;animation:none}
+.voucher-reveal{max-width:880px;margin:0 auto;position:relative;isolation:isolate;outline:none}
+.gift-stage--3 .voucher-reveal>.gift-bear-button{width:110px;right:3%;top:auto;bottom:calc(100% + 8px)}
+.voucher-reveal h3{font:500 16px/1.6 'Manrope',sans-serif;letter-spacing:.18em;color:#96516e;margin:0 0 19px}
+.actual-voucher{margin:0;padding:8px;background:#fff9ef;border:1px solid #d6afbb80;border-radius:10px;box-shadow:0 18px 55px -25px #a15e7d66;transform-origin:50% 0;animation:voucher-rise 1.45s cubic-bezier(.2,.65,.3,1) both}
+.actual-voucher img{display:block;width:100%;height:auto;object-fit:contain;border-radius:6px}
+.voucher-full{display:inline-block;font:22px var(--hand);color:#9a657a;border-bottom:1px solid #b9889c55;margin-top:15px;padding:5px}
+.denim-note{max-width:650px;margin:35px auto 0;color:#805765;font-size:16px;line-height:1.85}
+.denim-note p{margin:0 0 20px;animation:note-line 1s var(--note-delay) both}
+.denim-note p:first-child,.denim-note p:last-child{font:600 30px/1.35 var(--hand);color:#a15a78}
+.denim-note p:last-child{margin-bottom:0}
+.celebration-heart{position:fixed;left:calc(50% - 55px);top:35%;z-index:8;font:110px var(--serif);color:#c57593;pointer-events:none;animation:big-love 1.8s both}
+.voucher-reveal:focus-visible{outline:2px dashed #b7819b;outline-offset:12px;border-radius:7px}
+.voucher-reveal h3{font-size:13px;font-family:'Manrope',sans-serif;letter-spacing:.21em;color:#9f687b;font-weight:500;margin:0 auto 23px;position:relative;z-index:6}
+.actual-voucher{padding:9px;background:#fff8ee;border:1px solid #c7a5a459;border-radius:7px;box-shadow:0 15px 50px -27px #874b6799;margin:0;animation:voucher-rise 1.45s cubic-bezier(.18,.67,.25,1) both;transform-origin:50% 0}
+.actual-voucher img{display:block;width:100%;height:auto;aspect-ratio:1028/585;object-fit:contain;border-radius:3px}
+.denim-note{max-width:655px;margin:37px auto 0;padding:30px 35px 17px;background:#fffbf3bd;border:1px solid #dbb9bf45;border-radius:3px;position:relative}
+.denim-note:before{content:'';position:absolute;top:-10px;left:calc(50% - 40px);width:80px;height:21px;transform:rotate(-4deg);background:#dab6c58c}
+.denim-note p{font-size:17px;line-height:1.8;color:#7b5263;margin:0 0 19px;animation:note-line .9s var(--note-delay) both}
+.denim-note p:first-child{font:30px/1.25 var(--hand);color:#a35876}
+.denim-note p:last-child{font:600 30px/1.25 var(--hand);color:#a35876;margin-bottom:9px}
+.celebration-heart{position:fixed;inset:32% 0 auto;z-index:20;text-align:center;color:#bf7393;font:150px var(--serif);pointer-events:none;opacity:0;animation:big-love 1.8s both}
+@keyframes envelope-wiggle{0%,100%{transform:rotate(-3deg)}20%,60%{transform:rotate(3deg)}40%,80%{transform:rotate(-6deg)}}
+@keyframes flap-open{to{transform:rotateX(180deg);z-index:1}}
+@keyframes letter-emerge{to{transform:translateY(-88px) rotate(-5deg)}}
+@keyframes seal-away{to{transform:translateY(60px) rotate(50deg);opacity:0}}
+@keyframes video-appear{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes tissue-rise{0%{opacity:0;transform:translateY(40px) rotate(-14deg)}30%{opacity:.9}100%{opacity:0;transform:translate(-20px,-125px) rotate(-32deg)}}
+@keyframes wrap-left{0%{opacity:.9}100%{opacity:0;transform:translate(-85px,60px) rotate(-70deg)}}
+@keyframes wrap-right{0%{opacity:.9}100%{opacity:0;transform:translate(85px,60px) rotate(70deg)}}
+@keyframes voucher-rise{0%{opacity:0;transform:perspective(1200px) translateY(-115px) scale(.25) rotateY(-34deg) rotateX(12deg)}45%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes big-love{0%{opacity:0;transform:scale(.4)}30%{opacity:.65;transform:scale(1)}100%{opacity:0;transform:translateY(-65px) scale(1.2)}}
+@media(max-width:700px){.video-surprise{padding:85px 25px 95px}.video-surprise h2{font-size:43px;line-height:1.07}.video-surprise .eyebrow{font-size:10px}.envelope-scene{height:240px;max-width:330px;margin-top:38px}.surprise-envelope{width:210px;height:145px;left:3px;bottom:25px}.envelope-flap{height:85px}.envelope-seal{top:62px;width:35px;height:35px;left:calc(50% - 17px)}.envelope-bear{width:122px;right:-4px;bottom:2px}.tiny-bear-envelope{width:52px;left:34px;bottom:20px}.scene-heart--two{right:18%}.birthday-video-frame{padding:7px;margin-top:28px}.video-note,.video-finished>p{font-size:25px}.video-skip{font-size:13px}.birthday-keepsake{margin-bottom:85px;padding:0}.birthday-keepsake h2{font-size:43px!important}.birthday-keepsake>p{font-size:16px;line-height:1.8}.birthday-keepsake .keepsake-wish{font-size:30px}.ending{padding:70px 24px 75px}.gift-title{font-size:44px!important}.gift-subtitle{font-size:25px}.gift-theatre{height:300px;margin-top:30px;margin-bottom:24px;max-width:350px}.gift-scene{left:-24px;bottom:7px;transform:scale(.78);transform-origin:bottom left}.gift-bear{width:125px;right:-5px;bottom:0}.gift-stage--3 .gift-theatre{height:175px;margin-bottom:-28px}.gift-stage--3 .gift-scene{transform:scale(.48);left:0}.gift-stage--3 .gift-bear-button{width:115px;right:0;bottom:10px}.voucher-reveal h3{font-size:11px;letter-spacing:.15em;margin-bottom:18px}.actual-voucher{padding:5px}.denim-note{margin-top:30px;padding:29px 22px 18px}.denim-note p{font-size:16px;line-height:1.8}.denim-note p:first-child,.denim-note p:last-child{font-size:28px}.gift-actions{min-height:110px}}
+@media(max-width:360px){.video-surprise{padding-inline:22px}.video-surprise h2{font-size:37px}.envelope-bear{width:105px;right:-3px}.surprise-envelope{width:187px;height:135px;left:0}.envelope-flap{height:77px}.envelope-seal{top:55px}.tiny-bear-envelope{width:45px;left:30px;bottom:16px}.envelope-scene{height:222px}.ending{padding-inline:21px}.gift-title{font-size:39px!important}.gift-subtitle{font-size:23px}.gift-scene{left:-24px;transform:scale(.68)}.gift-bear{width:110px}.gift-theatre{height:270px}.gift-stage--3 .gift-theatre{height:156px}.gift-stage--3 .gift-bear-button{width:105px}.denim-note{padding-inline:19px}.denim-note p:first-child,.denim-note p:last-child{font-size:26px}}
+@media(max-width:700px){.gift-stage--3 .gift-scene{left:calc(50% - 160px)}}
+@media(prefers-reduced-motion:reduce){.video-surprise *,.gift-reveal *{animation:none!important;transition:none!important}.actual-voucher,.denim-note p,.video-unsealed{opacity:1;transform:none}.celebration-heart{display:none}.video-phase--opening .envelope-flap{transform:rotateX(180deg)}.video-phase--opening .envelope-letter{transform:translateY(-70px)}}
+
+/* Final polish: one-click gift, a real two-sided card, and a quiet sound control. */
+.video-unsealed[hidden]{display:none}
+.video-replay{border:0;background:transparent;color:#965b76;font:23px var(--hand);padding:9px 16px;cursor:pointer;text-decoration:underline;text-underline-offset:5px}
+.gift-box-button{position:absolute;inset:0;padding:0;border:0;background:transparent;cursor:pointer;border-radius:40%;color:inherit;touch-action:manipulation}
+.gift-box-button:disabled{cursor:default}
+.gift-box-button:focus-visible{outline:2px dashed #a86685;outline-offset:8px}
+.gift-box-button:not(:disabled):hover .present{filter:drop-shadow(0 3px 10px #b7799955)}
+.gift-bear{pointer-events:none}
+.gift-opening-hint{font:26px var(--hand);color:#a56280;min-height:65px;margin:0 auto 20px}
+.voucher-value{display:block;letter-spacing:.07em;font:600 24px/1.4 var(--hand);margin-top:7px}
+.voucher-card{width:100%}
+.voucher-flip{position:relative;width:100%;perspective:1500px;transition:height .65s ease;animation:voucher-rise 1.45s cubic-bezier(.18,.67,.25,1) both}
+.voucher-card-inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1)}
+.voucher-flip.is-flipped .voucher-card-inner{transform:rotateY(180deg)}
+.voucher-face{position:absolute;top:0;left:0;right:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:8px;border:1px solid #d8b8c4;background:#fffaf1;box-shadow:0 17px 45px -26px #925b7890}
+.voucher-face[aria-hidden=true]{pointer-events:none}
+button.voucher-face{width:100%;padding:9px;cursor:pointer;overflow:hidden;color:inherit}
+.voucher-face:focus-visible{outline:2px dashed #a26280;outline-offset:7px}
+.voucher-face img{display:block;width:100%;height:auto;aspect-ratio:1028/585;object-fit:contain;border-radius:3px}
+.voucher-back{transform:rotateY(180deg);padding:25px 24px 20px;display:flex;flex-direction:column;align-items:center;min-height:330px}
+.shopping-pass-title{font:600 30px/1.2 var(--hand);color:#a35e7b;margin:0 0 18px}
+.pass-copy{font-size:15px;line-height:1.75;color:#855c6d;max-width:400px;margin:2px auto 22px}
+.voucher-password{width:min(350px,100%)}
+.voucher-password label{display:block;font-size:13px;color:#875569;text-align:left;margin-bottom:8px}
+.voucher-password input{display:block;width:100%;min-height:46px;border:1px solid #cfadba;border-radius:5px;padding:10px 13px;font:17px var(--sans);color:#75495e;background:#fffdf9;margin-bottom:17px}
+.voucher-password input:focus-visible{outline:2px solid #bd7d9b;outline-offset:3px}
+.download-voucher{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border:1px solid #ba839a;border-radius:24px;padding:11px 23px;background:#f2d8e1;color:#874c68;font:500 14px/1.5 'Manrope',sans-serif;cursor:pointer;box-shadow:0 5px 12px #b77a9112}
+.download-voucher:disabled{opacity:.65;cursor:wait}
+.download-voucher:focus-visible,.flip-back:focus-visible,.video-replay:focus-visible{outline:2px dashed #a26280;outline-offset:5px}
+.voucher-back .activation-qr{width:min(320px,100%);height:auto;aspect-ratio:654/649;border-radius:0;background:#fff;margin:0 0 20px;object-fit:contain}
+.flip-back{border:0;background:none;color:#9c6b80;font:20px/1.4 var(--hand);text-decoration:underline;text-underline-offset:4px;margin-top:18px;min-height:44px;cursor:pointer}
+.flip-hint{font:25px/1.3 var(--hand);color:#a16a81;margin:19px 0 0}
+.voucher-error{font-size:14px;line-height:1.6;max-width:400px;color:#994b68;margin:15px auto 0}
+.tomorrow-secret{display:flex;align-items:center;gap:18px;text-align:left;max-width:660px;margin:50px auto 0;padding:17px 16px;background:radial-gradient(ellipse,#f9e0d452,transparent 75%);position:relative;animation:note-line 1s 4.1s both}
+.secret-bear{position:relative;flex:0 0 95px;width:95px;transform:rotate(-4deg)}
+.secret-bear>span{position:absolute;right:0;top:3px;font:600 26px var(--hand);color:#b58b5f;animation:envelope-love 4s infinite}
+.secret-bear>i{position:absolute;left:0;top:0;color:#be819b;font:21px var(--hand);animation:heart-breathe 3s infinite}
+.tomorrow-secret p{font:25px/1.35 var(--hand);color:#a2637c;margin:0 0 10px;animation:note-line .9s 4.3s both}
+.tomorrow-secret p:last-child{margin-bottom:0;animation-delay:4.85s}
+.secret-bear .teddy-eyes ellipse:nth-of-type(2),.secret-bear .teddy-eyes circle:last-child{transform-box:fill-box;transform-origin:center;animation:secret-wink 6s 5s infinite}
+.sound-control{position:fixed;z-index:30;bottom:18px;left:20px;display:flex;align-items:center;gap:10px;border:1px solid #c39bad70;border-radius:28px;background:#fff9f0ed;box-shadow:0 4px 20px #9a6e8515;padding:4px 13px 4px 5px;color:#925a75;backdrop-filter:blur(8px)}
+.sound-control button{display:flex;align-items:center;gap:7px;padding:5px 8px;background:none;border:0;color:inherit;cursor:pointer;min-height:36px;font:12px 'Manrope',sans-serif;border-radius:20px}
+.sound-control button>span:first-child{font-size:22px}
+.sound-control input{width:65px;height:25px;accent-color:#b27995;cursor:pointer;vertical-align:middle}
+.sound-control button:focus-visible,.sound-control input:focus-visible{outline:2px dashed #a26280;outline-offset:3px}
+@keyframes secret-wink{0%,4%,10%,100%{transform:scaleY(1)}6%,8%{transform:scaleY(.15)}}
+@media(max-width:700px){.voucher-back{padding:22px 15px 16px}.shopping-pass-title{font-size:28px}.voucher-face{border-radius:6px}button.voucher-face{padding:5px}.flip-hint{font-size:23px}.voucher-value{font-size:22px}.tomorrow-secret{margin-top:35px;padding:13px 0;gap:11px}.secret-bear{flex-basis:70px;width:70px}.tomorrow-secret p{font-size:22px}.secret-bear>span{font-size:23px}.sound-control{bottom:12px;left:12px;gap:4px;padding-right:10px}.sound-control input{width:50px}.sound-control button{font-size:11px;gap:5px}}
+@media(prefers-reduced-motion:reduce){.voucher-flip,.voucher-card-inner{animation:none!important;transition:none!important}.tomorrow-secret,.tomorrow-secret p{opacity:1;transform:none}.sound-control *,.secret-bear *{animation:none!important}}
+
+.voucher-front.actual-voucher{animation:none;transform:none}
+.music-credit-link{font:11px 'Manrope',sans-serif;color:#925a75;padding:10px 2px;text-underline-offset:3px;white-space:nowrap}
+.music-credit-link:focus-visible{outline:2px dashed #a26280;outline-offset:3px}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm ci",
+  "functions": {
+    "api/voucher.js": {
+      "includeFiles": "{private/activation-qr.png,src/data/voucher.pdf}",
+      "maxDuration": 10
+    }
+  }
+}

@@ -1,0 +1,207 @@
+/* Adds a scrapbook identity to the original layouts and interactions. */
+:root{color:#603748;background:#fff8ee;--cream:#fff9ee;--rose:#ad5978;--gold:#ad874e;--muted:#83656d;--hand:'Caveat','Segoe Print',cursive}
+::selection{background:#e6b7c7;color:#542b3e}
+button:focus-visible,a:focus-visible{outline-color:#a34f73}
+.ambient-scene{background:#fff9f0}
+.ambient-orb{filter:blur(120px)}
+.ambient-orb--one{opacity:.58}.ambient-orb--two{opacity:.6}
+.ambient-scene:after{background:radial-gradient(ellipse at 45% 35%,#fff8ee00,#fff8ee55)}
+.grain{opacity:.032;mix-blend-mode:multiply;z-index:11}
+.skip-link{background:#733b55;color:#fff9ef;border-radius:4px}
+.site-header{padding:33px 5vw}.monogram{color:#78435b}
+.monogram svg{color:#b97490;width:22px;height:22px;margin-left:13px}
+.header-note{font:25px var(--hand);color:#8b6072}
+.header-date{font-size:14px;color:#765565}.header-date>span{font-size:12px}.header-date svg{color:#b5905e}
+
+/* Opening birthday card and replayable personal note. */
+.intro{height:auto;min-height:100svh;padding:143px 5vw 95px;overflow:clip}
+.intro:after{left:5vw;right:5vw;background:linear-gradient(90deg,transparent,#b982914d,transparent)}
+.intro-halo{background:radial-gradient(ellipse,#e9b7ce45,transparent 70%);height:100%;width:1200px}
+.orbit{border-color:#a9798f13;top:40%;left:28%;width:600px;height:480px}
+.orbit--two{width:640px;height:510px;border-color:#a9798f0c}
+.orbit--one:before{background:#be8a9d;box-shadow:0 0 16px #be8a9d38}
+.scrapbook-opening{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);width:min(1250px,100%);gap:clamp(55px,7vw,110px);align-items:center;padding:0;text-align:left}
+.intro-title-block{position:relative;min-width:0;padding:30px 0 34px}
+.intro-eyebrow{justify-content:flex-start;gap:13px;color:#946b78;font-size:12px;letter-spacing:.23em;margin-bottom:28px}
+.intro-eyebrow>span{background:#bc8d9f85;width:24px}
+.intro-title-line{font-size:clamp(66px,6.7vw,101px);line-height:.94;max-width:500px;color:#703a53;white-space:normal}
+.intro-name{font-size:clamp(155px,15vw,217px);color:#b96985;line-height:1;margin:3px 0 0}
+.birthday-heart{font:30px/1 sans-serif;position:absolute;right:-48px;top:48%;transform:rotate(-10deg)}
+.name-spark{right:-80px;top:32%;width:19px;color:#bd975c}
+.intro-teddy{position:absolute;width:190px;right:-7px;bottom:81px;transform:rotate(4deg);z-index:2}
+.intro-flower{position:absolute;right:7%;top:-54px;width:64px;transform:rotate(15deg);opacity:.85}
+.intro-subtitle{font:28px/1.2 var(--hand);color:#865c6d;margin:26px 0 22px;max-width:260px;animation-delay:1s}
+.intro-dedication{font:20px/1.3 var(--hand);letter-spacing:0;color:#9c7280;justify-content:flex-start;gap:8px;margin-top:15px}
+.intro-dedication svg{width:21px;height:21px;color:#b96c87}
+.handdrawn-swoop{display:block;width:260px;margin-top:9px;color:#c78fa28c;animation:arrive 1.5s 1.2s both}
+.handdrawn-swoop svg{display:block;width:100%}
+.intro-footnote{left:5vw;bottom:28px;color:#9a7680;font-size:11px;letter-spacing:.12em}
+.personal-note{position:relative;isolation:isolate;background:#fffcf5;border:1px solid #d8b9bb66;border-radius:3px 7px 3px 4px;padding:29px 34px 27px;box-shadow:1px 8px 0 -3px #f3e8db,1px 9px 0 -3px #c9a8ad60,0 19px 45px -27px #79485855;transform:rotate(1deg)}
+.personal-note:before{content:'';position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(transparent 0 27px,#bd9a9211 27px 28px);opacity:.5;pointer-events:none;border-radius:inherit}
+.personal-note:after{content:'';position:absolute;bottom:0;right:0;border-left:22px solid transparent;border-bottom:22px solid #e9d8cd;filter:drop-shadow(-2px -1px 1px #b2928320)}
+.note-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px dashed #c6a0a452;padding-bottom:14px;margin-bottom:18px;font:21px var(--hand);color:#a37582}
+.note-heading>span:last-child{color:#bf7e97;font-size:27px}
+.note-tape{position:absolute;top:-14px;left:40%;width:98px;height:25px;transform:rotate(-4deg);background:repeating-linear-gradient(90deg,#e4c1cf8c 0 4px,#ecccd777 4px 8px);border-inline:1px dashed #c792a562;z-index:2;pointer-events:none}
+.note-bow{position:absolute;right:-28px;top:-25px;width:78px;transform:rotate(15deg);pointer-events:none}
+.message-paragraph{font-size:16px;line-height:1.75;margin:0 0 15px;color:#75525c;letter-spacing:-.015em}
+.message-paragraph--0{font:600 31px/1.15 var(--hand);color:#9c516d;margin-bottom:17px}
+.message-paragraph--4{font:600 27px/1.2 var(--hand);color:#9c516d;margin-top:18px;margin-bottom:21px}
+.message-line{display:inline;animation:note-line .85s var(--line-delay) both}
+.message-paragraph--0 .message-line,.message-paragraph--4 .message-line{display:inline-block}
+.note-actions{display:flex;align-items:center;flex-wrap:wrap;gap:14px 19px;animation:note-line .85s 4.8s both}
+.scrapbook-start,.open-surprise{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:13px 21px;background:#8f4968;color:#fff9ef;border:1px solid #8f4968;border-radius:30px 27px 30px 24px;box-shadow:0 4px 0 #71324e18;font-size:14px;font-weight:500;letter-spacing:.01em;transition:background .25s,transform .25s}
+.scrapbook-start:hover,.open-surprise:hover{background:#77354f;transform:translateY(-2px)}
+.replay-note{border:0;border-bottom:1px solid #ac7a8c55;background:transparent;padding:5px 0;font-size:12px;line-height:1.5;color:#936c79}
+.note-scroll-hint{display:block;margin:15px 0 0;font:19px var(--hand);color:#a77e86;text-align:center;animation:note-line .85s 4.8s both}
+.particles>span{background:#b58291;box-shadow:none}
+.particles--celebration>span:nth-child(3n):after{content:'♡';font:19px var(--serif);color:#c68d9b;position:absolute;top:-8px;left:-6px}
+
+/* Soft paper, a stitched timeline and a few stickers. */
+.timeline-thread{background:transparent;border-left:1px dashed #b57d8b5c;overflow:visible}
+.timeline-thread-fill{background:#b5738c;box-shadow:0 0 8px #c286a022;position:relative;left:-1px}
+.year-divider{padding-top:130px;padding-bottom:95px}.year-divider--first{padding-top:120px;padding-bottom:100px}
+.year-divider-line{background:linear-gradient(transparent,#bb84996b)}
+.eyebrow{font-size:12px;letter-spacing:.19em;color:#986876}
+.year-divider h2{color:#a2677c;position:relative;display:inline-block;font-size:125px;margin-top:6px;margin-bottom:23px}
+.year-divider h2:after{content:'';position:absolute;bottom:-3px;left:-12%;width:124%;height:15px;border-bottom:2px solid #c8a16975;border-radius:50%;transform:rotate(-3deg)}
+.year-spark{color:#b69b65;margin-top:28px}
+.chapter-note{font:27px/1.2 var(--hand);color:#896775;max-width:390px;margin:auto}
+.chapter-envelope{position:absolute;width:90px;right:12%;top:38%;transform:rotate(11deg)}
+.memory{padding-top:95px;padding-bottom:105px;min-height:90svh}
+.memory-marker{width:8px;height:8px;border:0;background:#c18aa1;border-radius:1px;transform:rotate(-45deg);opacity:.35}
+.memory-marker:before,.memory-marker:after{content:'';position:absolute;width:8px;height:8px;background:inherit;border-radius:50%}
+.memory-marker:before{top:-4px;left:0}.memory-marker:after{left:4px;top:0}
+.memory.is-active .memory-marker{background:#b36a86;transform:rotate(-45deg) scale(1.1);opacity:1;box-shadow:0 0 12px #b36a8633}
+.memory-composition{gap:clamp(40px,6.5vw,95px)}
+.photo-button{padding:10px 10px 13px;background:#fffdf7;box-shadow:0 10px 23px -15px #79574c60,0 2px 3px #89685d14;border:1px solid #d4bbac5e;transform:rotate(-.6deg);transition:transform .8s cubic-bezier(.2,.6,.3,1)}
+.photo-button:after{border:0}.photo-button img{filter:none}
+.photo-button:hover{transform:rotate(0) translateY(-3px)}
+.memory--reverse .photo-button{transform:rotate(.7deg)}.memory--reverse .photo-button:hover{transform:rotate(0) translateY(-3px)}
+.photo-edge{display:none}
+.frame-tape{position:absolute;width:81px;height:21px;background:#ddc2b48c;border-inline:1px dashed #c9a08a7a;top:-13px;left:calc(50% - 40px);transform:rotate(-5deg);z-index:2;pointer-events:none}
+.memory--reverse .frame-tape{transform:rotate(5deg);background:#d4c5db8c;border-color:#a28eac66}
+.memory--journal .photo-button{padding:14px 14px 49px;background:#fffcf4;box-shadow:0 12px 30px -18px #6a4b3a66}
+.polaroid-date{position:absolute;bottom:11px;left:0;width:100%;text-align:center;font:21px var(--hand);color:#986b79;pointer-events:none;transform:rotate(-1.5deg)}
+.memory--reverse .polaroid-date{transform:rotate(1.4deg)}
+.memory--spotlight .photo-button{padding:12px;transform:none}.memory--spotlight .photo-button:hover{transform:translateY(-3px)}
+.photo-hint{font-size:12px;color:#fff8f0;background:#62364bd9;border-color:#fff5}
+.memory-kicker{font:22px var(--hand);color:#aa7b87;letter-spacing:0}
+.memory-copy h3{color:#693f50;margin-top:16px;font-size:clamp(44px,4.1vw,62px)}
+.memory-year{color:#a37980;font-size:32px}
+.caption-rule{background:#c39a665e;width:42px;margin-top:23px;margin-bottom:19px;transform:rotate(-4deg)}
+.memory-caption{font:29px/1.3 var(--hand);color:#74515f;overflow-wrap:normal}
+.memory-heart{color:#b96e87;opacity:.7;fill:#d69aae12;width:26px;height:25px;margin-top:25px}
+.memory--journal .memory-copy{background:#f5dedb99;padding:24px 25px 20px;transform:rotate(1.6deg);box-shadow:1px 4px 1px -3px #c39c9459;border-radius:1px}
+.memory--journal .memory-copy:before{content:'';position:absolute;top:-9px;left:33%;width:67px;height:19px;background:#e4cbbf8c;transform:rotate(-5deg)}
+.memory--journal .memory-copy h3{font-size:48px}
+.memory--spotlight .memory-copy h3{font-size:45px}.memory--spotlight .memory-caption{font-size:31px}.memory--spotlight .caption-rule{margin-inline:auto}
+.timeline-tail svg{color:#b6748d;fill:#ddaab81f;width:37px;height:37px}
+.journey-progress{right:19px;gap:13px;padding:17px 10px 15px;background:#fffaf2ba;border:1px solid #c6a0a326;border-radius:35px;backdrop-filter:blur(7px)}
+.progress-label{font-size:11px;letter-spacing:.15em;color:#a07485}
+.progress-track{background:#d4adb954;height:90px;width:2px;border-radius:5px}.progress-track>span{background:#b76988;border-radius:5px}
+.progress-count{font-size:12px;color:#84516a}.progress-count>span{font-size:11px;color:#9d7b83}
+
+/* Characters sit outside the image area; only the active memory animates. */
+.animated-sticker{display:inline-block;pointer-events:none;filter:drop-shadow(0 3px 0 #fff8ed) drop-shadow(0 5px 2px #8b616412)}
+.animated-sticker>svg{display:block;width:100%;height:auto;overflow:visible}
+.teddy,.bunny{display:block;height:auto;overflow:visible}
+.memory-sticker{position:absolute;bottom:calc(100% - 6px);right:-21px;width:88px;z-index:4;transform:rotate(8deg)}
+.memory-sticker.sticker--teddy{width:116px;right:-26px;transform:rotate(5deg)}
+.memory-sticker.sticker--bunny{width:91px;right:-20px;transform:rotate(-6deg)}
+.memory--reverse .memory-sticker{left:-21px;right:auto;transform:rotate(-7deg)}
+.memory--reverse .memory-sticker.sticker--teddy{left:-23px;right:auto}
+.teddy{filter:drop-shadow(0 3px 0 #fff9ed) drop-shadow(0 8px 8px #82593c12)}
+.teddy-sway{transform-origin:110px 220px;animation:teddy-breathe 5s ease-in-out infinite}
+.teddy-wave{transform-origin:166px 163px;animation:teddy-wave 2.8s ease-in-out infinite}
+.teddy-eyes{transform-box:fill-box;transform-origin:center;animation:teddy-blink 6s infinite}
+.teddy--peek .teddy-sway{transform-origin:110px 160px;animation:teddy-peek 5s ease-in-out infinite}
+.teddy--hug .teddy-heart{animation:heart-colour 5s ease-in-out infinite}
+.teddy-love{animation:heart-breathe 4s ease-in-out infinite;transform-origin:center}
+.bunny-sway{transform-origin:85px 190px;animation:bunny-sway 5s ease-in-out infinite}
+.flower-sway{transform-origin:65px 143px;animation:bunny-sway 6s ease-in-out infinite}
+.bow-sway{transform-origin:75px 54px;animation:bow-sway 5s ease-in-out infinite}
+.envelope-heart{animation:envelope-love 4s ease-in-out infinite}
+.sticker-heart-pop{transform-origin:center;animation:heart-breathe 5s ease-in-out infinite}
+.memory:not(.is-active) .animated-sticker *,.story-started .intro .teddy *,.story-started .intro .animated-sticker *,.birthday-app:not(.at-ending) .ending .teddy *{animation-play-state:paused}
+.photo-reveal-sparks{position:absolute;inset:0;pointer-events:none}
+.photo-reveal-sparks svg{position:absolute;opacity:0;color:#c5859d;width:18px;height:20px;left:-27px;top:10%}
+.photo-reveal-sparks svg:nth-child(2){left:auto;right:-26px;top:35%;color:#c4a26e;width:16px}
+.photo-reveal-sparks svg:nth-child(3){left:auto;right:10%;top:-30px;width:14px}
+.is-revealed>.memory-figure>.photo-reveal-sparks svg{animation:photo-love 1.6s .45s both}
+.is-revealed>.memory-figure>.photo-reveal-sparks svg:nth-child(2){animation-delay:.65s}
+.is-revealed>.memory-figure>.photo-reveal-sparks svg:nth-child(3){animation-delay:.85s}
+.memory .memory-reveal--0:not(.is-revealed){transform:translateY(30px) scale(.965)}
+.memory .memory-reveal--1:not(.is-revealed){transform:translate(-26px,18px) rotate(-1deg)}
+.memory .memory-reveal--2:not(.is-revealed){transform:translate(23px,24px) scale(.98)}
+.memory .memory-reveal--3:not(.is-revealed){transform:translateY(35px) rotate(1.3deg) scale(.985)}
+
+/* A gift that opens into her birthday card. */
+.ending{padding:110px 80px 150px;min-height:930px;overflow:clip}
+.ending-glow{background:radial-gradient(ellipse,#f2d8ad45,transparent 65%)}
+.ending-content{width:100%;max-width:860px;position:relative}
+.ending .eyebrow{color:#9e6c74;font-size:12px;letter-spacing:.17em;margin:0 0 20px}
+.ending-teddy{width:210px;margin:0 auto 17px}
+.ending-content[data-surprise-open=true]>.ending-teddy{width:145px;margin-bottom:-4px;position:relative;z-index:2}
+.ending h2{font-size:clamp(49px,5.2vw,70px);color:#764156;margin-bottom:23px}.ending h2 em{color:#b46782}
+.gift-invitation>p{font:28px/1.3 var(--hand);color:#966979;margin:0 0 28px}
+.open-surprise{font-size:16px;min-height:54px;padding-inline:26px;animation:gift-invitation 4.5s ease-in-out infinite}
+.gift-hint{display:block;font:21px var(--hand);color:#a17c81;margin-top:17px}
+.birthday-card{position:relative;max-width:740px;margin:0 auto;background:#fffbf3;border:1px solid #cba9ab70;border-radius:5px 8px 4px 7px;padding:42px 57px 23px;box-shadow:0 6px 0 -2px #f1e1d6,0 7px 0 -2px #ceb3aa88,0 20px 60px -35px #96646a80;animation:card-open .9s cubic-bezier(.2,.7,.3,1) both;transform-origin:top}
+.birthday-card:focus{outline:none}.birthday-card:focus-visible{outline:2px dashed #c18a9f;outline-offset:8px}
+.card-bow{position:absolute;right:-27px;top:0;width:85px;transform:rotate(13deg)}
+.birthday-card h2{font-size:59px;line-height:1.03}
+.ending-letter{color:#78525f;line-height:1.85;font-size:16px}
+.ending-content.reveal .ending-letter p,.ending-content.reveal .birthday-wish{opacity:1;transform:none;transition:none}
+.ending-letter p{margin-bottom:22px}
+.birthday-wish{color:#a95976;font:600 37px/1.25 var(--hand);margin:27px 0 20px}
+.surprise-line{animation:note-line 1.1s var(--surprise-delay) both}
+.wish-button{color:#ac5d7e;padding:7px 18px}.wish-button svg{width:33px;height:33px;fill:#e2adc223;filter:none}
+.wish-button span{font-size:12px;color:#916273;border-color:#c297a655}.wish-button:hover svg{fill:#e2adc24d}
+.wish-status{color:#a76d80;font:23px var(--hand);height:35px}
+footer{color:#9d7580;border-color:#bc8d9f42;font-size:11px;letter-spacing:.1em}
+footer>span:first-child{font:22px var(--hand);letter-spacing:0}footer a{font-size:13px;color:#865c6d;border-color:#ac788e66}footer>span:last-child>span{color:#af6684}
+.viewer-content img{box-shadow:0 10px 50px #08050722}.viewer-caption p+p{font:25px/1.3 var(--hand);color:#e3c2cb}
+.viewer-controls button{font-size:14px;min-height:44px}.viewer-controls>span{font-size:12px}
+.heart-trail{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden}
+.heart-trail-particle{position:absolute;font-family:Georgia,serif;line-height:1;pointer-events:none;animation:trail-love 1s both}
+
+@keyframes note-line{from{opacity:0;filter:blur(2px)}to{opacity:1;filter:blur(0)}}
+@keyframes teddy-breathe{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
+@keyframes teddy-wave{0%,50%,100%{transform:rotate(0)}12%{transform:rotate(17deg)}24%{transform:rotate(-8deg)}36%{transform:rotate(14deg)}}
+@keyframes teddy-blink{0%,43%,47%,100%{transform:scaleY(1)}45%{transform:scaleY(.1)}}
+@keyframes teddy-peek{0%,100%{transform:translateY(3px) rotate(-2deg)}50%{transform:translateY(-4px) rotate(2deg)}}
+@keyframes bunny-sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes bow-sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes envelope-love{0%,100%{transform:translateY(1px)}50%{transform:translateY(-8px)}}
+@keyframes heart-colour{0%,100%{fill:#ca718d}50%{fill:#db8ca3}}
+@keyframes photo-love{0%{opacity:0;transform:translateY(10px) scale(.6) rotate(-10deg)}25%{opacity:.8;transform:translateY(0) scale(1.1) rotate(5deg)}100%{opacity:0;transform:translateY(-23px) scale(.9) rotate(12deg)}}
+@keyframes gift-invitation{0%,85%,100%{box-shadow:0 4px 0 #71324e18;transform:translateY(0)}91%{box-shadow:0 8px 16px #71324e18;transform:translateY(-3px)}}
+@keyframes card-open{from{opacity:0;transform:perspective(1000px) rotateX(-7deg) scale(.98)}to{opacity:1;transform:none}}
+@keyframes trail-love{0%{opacity:.85;transform:translate(-50%,-50%) scale(.8) rotate(0)}20%{opacity:.9;transform:translate(-50%,-60%) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--trail-x)),calc(-50% + var(--trail-y))) scale(.5) rotate(var(--trail-turn))}}
+
+@media(min-width:1500px){.intro{min-height:100svh;padding-top:155px;padding-bottom:100px}.intro-title-line{font-size:105px}.intro-teddy{width:205px}.personal-note{padding:34px 40px 30px}.message-paragraph{line-height:1.85}.memory{padding-block:110px}}
+@media(max-width:1100px){.scrapbook-opening{gap:45px;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}.intro{padding-inline:5vw;min-height:100svh}.intro-title-line{font-size:74px}.intro-name{font-size:170px}.intro-teddy{width:145px;right:-5px;bottom:93px}.intro-subtitle{font-size:25px;max-width:205px}.intro-dedication{font-size:18px}.personal-note{padding:27px}.message-paragraph{font-size:16px;line-height:1.75}.message-paragraph--0{font-size:30px}.message-paragraph--4{font-size:26px}.intro-flower{right:4%;top:-65px}.memory-caption{font-size:28px}.memory--journal .memory-copy{padding:20px}.memory--journal .memory-copy h3{font-size:43px}.memory-sticker.sticker--teddy{width:104px}.chapter-envelope{right:7%}}
+@media(max-width:800px) and (min-width:701px){.intro-title-line{font-size:62px}.intro-teddy{position:relative;right:auto;bottom:auto;width:145px;margin:8px 0 0 80px}.intro-subtitle{max-width:none}.intro-dedication{font-size:17px}.intro-flower{right:0}.birthday-heart{font-size:26px;right:-36px}.name-spark{display:none}.personal-note{padding:24px}.note-bow{right:-16px;width:62px}.note-actions{gap:13px}.chapter-envelope{width:72px;right:2%}}
+@media(max-width:700px){
+  .site-header{padding:28px 27px}.header-note{display:none}.header-date{font-size:13px;gap:8px}.header-date>span{font-size:11px}.monogram{font-size:37px}.monogram svg{width:18px;height:18px}
+  .intro{height:auto;min-height:100svh;padding:119px 29px 65px}.scrapbook-opening{display:flex;flex-direction:column;gap:44px;align-items:stretch}.intro-content{width:100%;padding:0}.intro-title-block{padding:0 8px 10px}.intro-eyebrow{font-size:11px;justify-content:flex-start;margin-bottom:22px;gap:12px}.intro-title-line{font-size:clamp(55px,12vw,75px);max-width:400px;white-space:normal;letter-spacing:-.035em;line-height:.95}.intro-name{font-size:140px;margin-top:1px;line-height:1}.birthday-heart{font-size:24px;right:-38px;top:45%}.name-spark{right:-65px;width:16px;height:16px;top:27%}.intro-teddy{position:absolute;width:132px;right:0;bottom:93px}.intro-subtitle{font-size:25px;max-width:190px;margin:19px 0 14px;line-height:1.15}.intro-dedication{font-size:19px;letter-spacing:0;margin-top:15px;gap:7px}.intro-dedication svg{width:17px;height:17px}.handdrawn-swoop{width:235px;max-width:80%;margin-top:2px}.intro-flower{right:9px;top:-32px;width:47px}.orbit{left:40%;top:260px;width:500px;height:390px;transform:translate(-50%,-50%) rotate(-25deg)}.orbit--two{width:530px;height:415px}.intro-halo{top:22%;height:900px}.intro-footnote{display:none}
+  .personal-note{padding:27px 24px 24px;transform:rotate(.6deg);max-width:510px;align-self:center;width:100%}.note-heading{font-size:20px;margin-bottom:20px}.note-bow{width:64px;right:-18px;top:-25px}.note-tape{width:80px;height:23px;left:37%}.message-paragraph{font-size:16px;line-height:1.8;letter-spacing:-.02em;margin-bottom:18px}.message-paragraph--0{font:600 30px/1.2 var(--hand);margin-bottom:18px}.message-paragraph--4{font:600 27px/1.3 var(--hand);margin-top:18px;margin-bottom:24px}.message-line{animation-duration:.7s}.note-actions{gap:15px;justify-content:center;flex-direction:column}.scrapbook-start{min-height:50px;padding-inline:24px;font-size:15px}.replay-note{font-size:12px}.note-scroll-hint{font-size:20px;margin-top:19px}
+  .ambient-orb{filter:blur(75px)}.ambient-orb--one{opacity:.5}.ambient-orb--two{opacity:.5}
+  .memory-timeline{padding-left:41px;padding-right:37px}.timeline-thread{left:18px;top:210px}.memory-marker{left:-26px;width:7px;height:7px}.memory-marker:before,.memory-marker:after{width:7px;height:7px}.memory-marker:before{top:-3.5px}.memory-marker:after{left:3.5px}
+  .year-divider{padding:94px 0 85px}.year-divider--first{padding-top:95px;padding-bottom:96px}.year-divider h2{font-size:108px}.year-divider-line{height:30px}.chapter-note{font-size:25px;max-width:250px}.chapter-envelope{width:58px;right:-3%;top:19%;transform:rotate(14deg)}
+  .memory{min-height:auto;padding:83px 0 105px}.photo-button{padding:8px 8px 11px}.memory--journal .photo-button{padding:11px 11px 42px}.memory--spotlight .photo-button{padding:9px}.frame-tape{height:18px;width:65px;left:calc(50% - 32px);top:-12px}.polaroid-date{font-size:20px;bottom:9px}.memory-kicker{font-size:21px}.memory-copy h3{font-size:42px;margin-top:10px}.memory-year{font-size:28px}.memory-caption{font-size:28px;line-height:1.25}.caption-rule{margin:18px 0 14px;width:32px}.memory-heart{margin-top:19px;width:21px;height:21px}.memory--journal .memory-copy{max-width:95%;padding:22px 22px 18px;align-self:center}.memory--journal .memory-copy h3{font-size:39px}.memory--spotlight{padding:81px 0 90px}.memory--spotlight .memory-copy h3{font-size:39px}.memory--spotlight .memory-year{font-size:27px}.memory--spotlight .memory-caption{font-size:29px}
+  .memory-sticker{width:68px;right:-12px;bottom:calc(100% - 4px)}.memory-sticker.sticker--teddy{width:84px;right:-12px}.memory-sticker.sticker--bunny{width:71px;right:-8px}.memory--reverse .memory-sticker,.memory--reverse .memory-sticker.sticker--teddy{left:-10px;right:auto}.memory-sticker.sticker--envelope{width:68px}.photo-reveal-sparks svg{width:12px;left:-20px}.photo-reveal-sparks svg:nth-child(2){right:-17px;width:12px}
+  .journey-progress{right:5px;padding:11px 5px;gap:9px;border-radius:25px;backdrop-filter:none}.progress-label{display:none}.progress-track{height:65px;width:2px}.progress-count{font-size:10px}.progress-count>span{font-size:9px}.timeline-tail{height:110px}
+  .ending{padding:95px 28px 155px;min-height:870px}.ending .eyebrow{font-size:10px;letter-spacing:.12em;max-width:260px;line-height:1.7;margin-bottom:19px}.ending-teddy{width:180px;margin-bottom:20px}.ending h2{font-size:47px;line-height:1.03;margin-bottom:23px}.gift-invitation>p{font-size:25px}.open-surprise{font-size:15px;min-height:54px;padding-inline:23px}.gift-hint{font-size:20px;max-width:250px;line-height:1.2;margin:18px auto 0}.ending-content[data-surprise-open=true]>.ending-teddy{width:125px}.birthday-card{padding:31px 23px 20px}.birthday-card h2{font-size:47px;line-height:1.05;margin-bottom:27px}.card-bow{width:61px;right:-17px;top:5px}.ending-letter{font-size:16px;line-height:1.8}.ending-letter p{margin-bottom:22px}.birthday-wish{font-size:32px;margin:27px 0 20px}.wish-button span{font-size:12px}.wish-status{font-size:22px;height:34px}footer{left:26px;right:26px;bottom:26px;padding-top:23px;gap:13px;font-size:10px}footer>span:first-child{font-size:20px}footer a{font-size:12px}
+  .viewer-caption p+p{font-size:25px}.viewer-controls{gap:21px}.viewer-controls button{font-size:14px}.viewer-controls>span{font-size:12px}
+}
+@media(max-width:360px){.site-header{padding-inline:24px}.header-date{font-size:12px}.header-date>span{font-size:10px}.intro{padding-inline:23px}.intro-title-block{padding-inline:3px}.intro-title-line{font-size:55px}.intro-name{font-size:125px}.intro-teddy{width:108px;right:-2px;bottom:100px}.intro-subtitle{font-size:23px;max-width:165px}.intro-dedication{font-size:18px}.birthday-heart{font-size:22px;right:-32px}.name-spark{right:-57px}.personal-note{padding-inline:21px}.message-paragraph{font-size:16px}.message-paragraph--0{font-size:29px}.message-paragraph--4{font-size:26px}.memory-timeline{padding-left:37px;padding-right:34px}.timeline-thread{left:15px}.memory-copy h3{font-size:38px}.memory-year{font-size:25px}.memory--journal .memory-copy{padding-inline:17px}.memory--journal .memory-copy h3{font-size:35px}.memory--spotlight .memory-copy h3{font-size:36px}.memory-caption{font-size:26px}.chapter-envelope{width:49px;right:-12px}.ending{padding-inline:23px}.ending h2{font-size:42px}.birthday-card{padding-inline:19px}.birthday-card h2{font-size:44px}.birthday-wish{font-size:30px}}
+@media(hover:none),(pointer:coarse){.heart-trail{display:none}.photo-hint{display:none}}
+@media(max-width:700px){.heart-trail{display:none}}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .heart-trail,.confetti,.particles,.photo-reveal-sparks{display:none}
+  .message-line,.note-actions,.note-scroll-hint,.surprise-line{opacity:1;filter:none;translate:none}
+  .reveal,.memory .memory-composition.reveal,.memory--reverse .memory-composition.reveal{opacity:1;transform:none}
+  .birthday-card{opacity:1;transform:none}
+}
