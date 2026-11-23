@@ -65,3 +65,5 @@ The real browser checks covered automatic unmuted playback, three-click unwrappi
 Gift sounds are original procedural Web Audio ribbon swishes, paper crinkles and a final sparkle. Each click advances one stage only, rapid clicks during animation are ignored, and the master sound control mutes the effects. Reduced motion still requires three clicks.
 
 During each unwrapping stage, music drops within 100 ms to 12% of its selected level, capped at 2.5% absolute volume, then gently returns after the stage. Gift effects retain their own level at the normal 50% music setting. The closing wish reads “Happy Birthday, Suduu! ❤️”.
+
+The correct-answer celebration runs only after the server accepts the challenge. It uses a body-level visual overlay and locally synthesized applause; no new assets, services or environment variables are needed. It respects sound mute and reduced motion.

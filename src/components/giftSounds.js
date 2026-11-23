@@ -25,3 +25,27 @@ export function playGiftFoley(context,stage,volume,register) {
     oscillator.onended=()=>{oscillator.disconnect();bell.disconnect();};
   });
 }
+
+// An original little round of applause, built from short hand-clap transients.
+export function playUnlockApplause(context,volume,register) {
+  const duration=2.6,rate=context.sampleRate;
+  const buffer=context.createBuffer(2,Math.ceil(rate*duration),rate);
+  for(let channel=0;channel<2;channel++){
+    const samples=buffer.getChannelData(channel);
+    for(let clap=0;clap<16;clap++){
+      const start=Math.floor((.06+clap*.135+(channel? .013:0)+(clap%3)*.008)*rate);
+      const strength=.58+(clap%4)*.09;
+      for(let i=0;i<Math.floor(rate*.12)&&start+i<samples.length;i++){
+        const time=i/rate,envelope=Math.min(1,time/.0015)*Math.exp(-time/ .021);
+        const noise=Math.random()*2-1,body=Math.sin(2*Math.PI*(180+clap%3*35)*time);
+        samples[start+i]+=(noise*.8+body*.2)*envelope*strength;
+      }
+    }
+  }
+  const source=context.createBufferSource(),filter=context.createBiquadFilter(),gain=context.createGain();
+  source.buffer=buffer;filter.type='highpass';filter.frequency.value=420;
+  gain.gain.value=.27*volume;source.connect(filter);filter.connect(gain);gain.connect(context.destination);
+  source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect();};
+  source.start();register(source);
+  playGiftFoley(context,3,.5*volume,register);
+}

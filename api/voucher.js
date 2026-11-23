@@ -3,7 +3,9 @@ import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 
 const COOKIE='bawanya_gift';
+const ATTEMPT_COOKIE='bawanya_gift_tries';
 const TTL=600;
+const ATTEMPT_TTL=900;
 const digest=value=>createHash('sha256').update(value).digest();
 const same=(a,b)=>a.length===b.length&&timingSafeEqual(a,b);
 
@@ -19,6 +21,16 @@ export function createVoucherHandler({root=process.cwd(),getConfig=()=>process.e
     const seconds=Math.floor(now()/1000);
     const cookies=String(req.headers.cookie||'').split(';').map(item=>item.trim());
     const token=cookies.find(item=>item.startsWith(`${COOKIE}=`))?.slice(COOKIE.length+1)||'';
+    const local=/^(localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/.test(host);
+    const cookieHeader=(name,value,age)=>`${name}=${value}; Path=/api/voucher; HttpOnly; SameSite=Strict; Max-Age=${age}${local?'':'; Secure'}`;
+    const previousAttempts=()=>{
+      const progress=cookies.find(item=>item.startsWith(`${ATTEMPT_COOKIE}=`))?.slice(ATTEMPT_COOKIE.length+1)||'';
+      const [expires,count,nonce,sig,...extra]=progress.split('.');
+      if(extra.length||!/^\d{10}$/.test(expires||'')||!(/^[1-4]$/).test(count||'')||!(/^[A-Za-z0-9_-]{24}$/).test(nonce||'')||!(/^[A-Za-z0-9_-]{43}$/).test(sig||''))return 0;
+      const expiry=Number(expires);
+      if(expiry<=seconds||expiry>seconds+ATTEMPT_TTL||!same(Buffer.from(sig,'base64url'),signature(`attempts|${expires}.${count}.${nonce}`)))return 0;
+      return Number(count);
+    };
     const authenticated=()=>{
       const [expires,nonce,sig,...extra]=token.split('.');
       if(extra.length||!/^\d{10}$/.test(expires||'')||!(/^[A-Za-z0-9_-]{24}$/).test(nonce||'')||!(/^[A-Za-z0-9_-]{43}$/).test(sig||''))return false;
@@ -38,13 +50,20 @@ export function createVoucherHandler({root=process.cwd(),getConfig=()=>process.e
         let body;
         if(req.body!==undefined){const raw=typeof req.body==='string'?req.body:JSON.stringify(req.body);if(Buffer.byteLength(raw)>2048)return json(413,{error:'That password is too long.'});body=typeof req.body==='string'?JSON.parse(raw):req.body;}
         else {const chunks=[];let length=0;for await(const chunk of req){length+=Buffer.byteLength(chunk);if(length>2048)return json(413,{error:'That password is too long.'});chunks.push(Buffer.from(chunk));}body=JSON.parse(Buffer.concat(chunks).toString('utf8'));}
-        if(typeof body?.password!=='string'||body.password.length>256)return json(400,{error:'Type my full name in lowercase with spaces, sudu.'});
-        if(!same(digest(body.password),digest(password))){if(failures.size>=1024)failures.delete(failures.keys().next().value);failures.set(ip,{count:(attempts?.count||0)+1,until:attempts?.until||now()+15*60*1000});return json(401,{error:'Aiyooo, that’s not my full name! Try again, sudu 😂💗'});}
+        if(typeof body?.password!=='string'||!body.password.trim()||body.password.length>256)return json(400,{error:'Type my full name in lowercase with spaces, sudu.'});
+        const correct=same(digest(body.password),digest(password));
+        const misses=correct?0:previousAttempts()+1;
+        if(!correct&&misses<5){
+          if(failures.size>=1024)failures.delete(failures.keys().next().value);
+          failures.set(ip,{count:(attempts?.count||0)+1,until:attempts?.until||now()+15*60*1000});
+          const progress=`${seconds+ATTEMPT_TTL}.${misses}.${randomBytes(18).toString('base64url')}`;
+          res.setHeader('Set-Cookie',cookieHeader(ATTEMPT_COOKIE,`${progress}.${signature(`attempts|${progress}`).toString('base64url')}`,ATTEMPT_TTL));
+          return json(401,{error:'Aiyooo, not quite! Try again, Suduu 🥺💗',attempts:misses,...(misses>=3?{hint:"It's kankanamage, not kankanamge — yes, there's an 'a' between! 😂💗"}:{})});
+        }
         failures.delete(ip);
         const value=`${seconds+TTL}.${randomBytes(18).toString('base64url')}`;
-        const local=/^(localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/.test(host);
-        res.setHeader('Set-Cookie',`${COOKIE}=${value}.${signature(value).toString('base64url')}; Path=/api/voucher; HttpOnly; SameSite=Strict; Max-Age=${TTL}${local?'':'; Secure'}`);
-        return json(200,{ok:true,expiresIn:TTL});
+        res.setHeader('Set-Cookie',[cookieHeader(COOKIE,`${value}.${signature(value).toString('base64url')}`,TTL),cookieHeader(ATTEMPT_COOKIE,'',0)]);
+        return json(200,{ok:true,expiresIn:TTL,...(!correct?{forgiven:true,attempts:5,message:"Hmmphhh... never mind, Suduu 😌💗 I'm gonna forgive you for this one, hehe. Your little gift is yours anywayyy! 🥹❤️"}:{})});
       }
       if(req.method!=='GET'){res.setHeader('Allow','GET, POST');return json(405,{error:'Method not allowed.'});}
       if(!authenticated())return json(401,{error:'Please unlock your private shopping pass first.'});

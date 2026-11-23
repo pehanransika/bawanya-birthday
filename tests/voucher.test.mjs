@@ -13,11 +13,12 @@ async function call(handler,{method='GET',url='/api/voucher?asset=qr',body,heade
   const data=raw??(body===undefined?'':JSON.stringify(body));
   const req=Readable.from([Buffer.from(data)]);
   Object.assign(req,{method,url,headers:{host,origin:`https://${host}`,'content-type':'application/json',...headers}});
-  const res={statusCode:200,headers:{},setHeader(key,value){this.headers[key.toLowerCase()]=String(value);},end(bytes){this.body=Buffer.isBuffer(bytes)?bytes:Buffer.from(bytes||'');}};
+  const res={statusCode:200,headers:{},setHeader(key,value){this.headers[key.toLowerCase()]=Array.isArray(value)?value.map(String):String(value);},end(bytes){this.body=Buffer.isBuffer(bytes)?bytes:Buffer.from(bytes||'');}};
   await handler(req,res);return res;
 }
 const login=handler=>call(handler,{method:'POST',body:{password}});
-const cookie=response=>response.headers['set-cookie'].split(';')[0];
+const setCookies=response=>[response.headers['set-cookie']].flat().filter(Boolean);
+const cookie=(response,name='bawanya_gift')=>setCookies(response).find(value=>value.startsWith(`${name}=`))?.split(';')[0];
 
 test('fails closed without complete server configuration',async()=>{
   for(const vars of [{},{VOUCHER_ACCESS_PASSWORD:password},{...config,VOUCHER_SESSION_SECRET:'short'}]){
@@ -44,7 +45,7 @@ test('rejects bad, malformed and oversized passwords',async()=>{
 });
 test('issues a short signed HttpOnly, Strict, Secure cookie without a client token',async()=>{
   const result=await login(make());assert.equal(result.statusCode,200);
-  for(const flag of ['HttpOnly','SameSite=Strict','Secure','Max-Age=600','Path=/api/voucher'])assert(result.headers['set-cookie'].includes(flag));
+  for(const flag of ['HttpOnly','SameSite=Strict','Secure','Max-Age=600','Path=/api/voucher'])assert(setCookies(result)[0].includes(flag));
   assert.deepEqual(JSON.parse(result.body),{ok:true,expiresIn:600});assert(!result.body.includes(Buffer.from(password)));
 });
 test('serves byte-for-byte original QR and downloadable PDF only after login',async()=>{
@@ -76,4 +77,53 @@ test('only allows fixed asset names and GET/POST methods',async()=>{
   const handler=make(),session=cookie(await login(handler));
   assert.equal((await call(handler,{url:'/api/voucher?asset=../../.env',headers:{cookie:session}})).statusCode,404);
   assert.equal((await call(handler,{method:'DELETE'})).statusCode,405);
+});
+
+test('keeps files private for four misses, hints on three, and forgives the fifth',async()=>{
+  let progress='';
+  for(let attempt=1;attempt<=5;attempt++){
+    // Signed progress works even when every request reaches a fresh serverless instance.
+    const result=await call(make(),{method:'POST',body:{password:'wrong name'},headers:{cookie:progress}});
+    const body=JSON.parse(result.body);
+    assert.equal(body.attempts,attempt);
+    if(attempt<5){
+      assert.equal(result.statusCode,401);assert.equal(cookie(result),undefined);
+      assert.equal(Boolean(body.hint),attempt>=3);
+      if(attempt>=3){assert.match(body.hint,/kankanamage/);assert.match(body.hint,/kankanamge/);}
+      progress=cookie(result,'bawanya_gift_tries');assert(progress);
+      for(const asset of ['qr','download'])assert.equal((await call(make(),{url:`/api/voucher?asset=${asset}`,headers:{cookie:progress}})).statusCode,401);
+    }else{
+      assert.equal(result.statusCode,200);assert.equal(body.forgiven,true);assert.match(body.message,/forgive/);
+      assert(setCookies(result).some(value=>value.startsWith('bawanya_gift_tries=;')&&value.includes('Max-Age=0')));
+      for(const [asset,file] of [['qr','private/activation-qr.png'],['download','src/data/voucher.pdf']]){
+        const resource=await call(make(),{url:`/api/voucher?asset=${asset}`,headers:{cookie:cookie(result)}});
+        assert.equal(resource.statusCode,200);assert.deepEqual(resource.body,await readFile(file));
+      }
+    }
+  }
+});
+
+test('forgiveness cannot be requested by a client flag or a forged attempt cookie',async()=>{
+  const first=await call(make(),{method:'POST',body:{password:'wrong'}});
+  const progress=cookie(first,'bawanya_gift_tries');
+  const forged=progress.replace(/(=\d{10}\.)1\./,'$14.');
+  const result=await call(make(),{method:'POST',body:{password:'wrong',attempts:5,forgiven:true},headers:{cookie:forged}});
+  assert.equal(result.statusCode,401);assert.equal(JSON.parse(result.body).attempts,1);assert.equal(cookie(result),undefined);
+  assert.equal((await call(make(),{headers:{cookie:progress}})).statusCode,401);
+});
+
+test('expired progress resets and empty or malformed input does not advance attempts',async()=>{
+  let time=1795356000000;const handler=make({now:()=>time});
+  const first=await call(handler,{method:'POST',body:{password:'wrong'}}),progress=cookie(first,'bawanya_gift_tries');
+  const empty=await call(handler,{method:'POST',body:{password:'   '},headers:{cookie:progress}});
+  assert.equal(empty.statusCode,400);assert.equal(cookie(empty,'bawanya_gift_tries'),undefined);
+  time+=901000;
+  const result=await call(handler,{method:'POST',body:{password:'wrong'},headers:{cookie:progress}});
+  assert.equal(JSON.parse(result.body).attempts,1);
+});
+
+test('a correct answer before the fifth miss still uses the normal celebration',async()=>{
+  const result=await login(make());assert.equal(result.statusCode,200);
+  assert.equal(JSON.parse(result.body).forgiven,undefined);
+  assert(setCookies(result).some(value=>value.startsWith('bawanya_gift_tries=;')&&value.includes('Max-Age=0')));
 });

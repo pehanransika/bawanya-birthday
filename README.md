@@ -79,3 +79,5 @@ The normal cursor remains visible. The trail is limited to 24 particles, throttl
 
 
 
+
+A server-accepted full-name answer now triggers a short page-wide confetti celebration, a waving teddy, “Yayyy, you got it!” and original synthesized applause. Background music dips during the applause, and the master mute also mutes this effect. The overlay dismisses itself, never blocks interaction, and shows a static message without confetti when reduced motion is preferred. Incorrect answers never celebrate.

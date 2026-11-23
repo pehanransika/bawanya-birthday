@@ -1,5 +1,5 @@
 import React,{createContext,useCallback,useContext,useEffect,useMemo,useRef,useState} from 'react';
-import {playGiftFoley} from './giftSounds';
+import {playGiftFoley,playUnlockApplause} from './giftSounds';
 
 // Add one licensed, loop-ready instrumental with this basename; no remote requests.
 const tracks=import.meta.glob('../data/background-music.{mp3,m4a,ogg,wav}',{eager:true,query:'?url',import:'default'});
@@ -15,6 +15,7 @@ export function SoundProvider({children}) {
   const effects=useRef(new Set());
   const duckTimer=useRef(null);
   const [giftSounds,setGiftSounds]=useState(0);
+  const [unlockSounds,setUnlockSounds]=useState(0);
   const fadeMusic=useCallback((target,duration=1100)=>{
     const state=engine.current,audio=state.audio;
     cancelAnimationFrame(state.fade);
@@ -60,6 +61,19 @@ export function SoundProvider({children}) {
         state.ducked=false;setDucked(false);
         if(state.enabled&&!state.video)resumeMusic();
       },stage===1?1550:stage===2?1800:1450);
+    };
+    if(state.context?.state==='suspended')state.context.resume().then(play).catch(()=>{});else play();
+  },[beginExperience,fadeMusic,resumeMusic]);
+  const unlockSound=useCallback(()=>{
+    beginExperience();const state=engine.current;
+    const play=()=>{
+      if(!state.enabled||state.video||state.volume===0||state.context?.state!=='running')return;
+      clearTimeout(duckTimer.current);state.ducked=true;setDucked(true);fadeMusic(musicLevel(state),100);
+      playUnlockApplause(state.context,Math.min(1,state.volume/.2),source=>{
+        effects.current.add(source);source.addEventListener('ended',()=>effects.current.delete(source),{once:true});
+      });
+      setUnlockSounds(value=>value+1);
+      duckTimer.current=setTimeout(()=>{state.ducked=false;setDucked(false);if(state.enabled&&!state.video)resumeMusic();},2800);
     };
     if(state.context?.state==='suspended')state.context.resume().then(play).catch(()=>{});else play();
   },[beginExperience,fadeMusic,resumeMusic]);
@@ -127,8 +141,8 @@ export function SoundProvider({children}) {
     document.addEventListener('pointermove',move,{passive:true});window.addEventListener('scroll',scroll,{passive:true});
     return()=>{document.removeEventListener('pointermove',move);window.removeEventListener('scroll',scroll);clearTimeout(duckTimer.current);cancelAnimationFrame(engine.current.fade);for(const source of effects.current)source.stop();engine.current.audio?.pause();engine.current.context?.close();};
   },[]);
-  const actions=useMemo(()=>({beginExperience,giveVideoPriority,releaseVideoPriority,photoChime,giftSound}),[beginExperience,giveVideoPriority,releaseVideoPriority,photoChime,giftSound]);
-  return <SoundContext.Provider value={actions}>{children}{soundtrack&&<audio ref={music} src={soundtrack} preload="auto" loop aria-label="Gentle birthday background music"/>}<aside className="sound-control" aria-label="Birthday sound controls" data-sound-armed={armed} data-chimes-played={chimes} data-gift-sounds-played={giftSounds} data-music-ducked={ducked} data-video-priority={videoActive}>
+  const actions=useMemo(()=>({beginExperience,giveVideoPriority,releaseVideoPriority,photoChime,giftSound,unlockSound}),[beginExperience,giveVideoPriority,releaseVideoPriority,photoChime,giftSound,unlockSound]);
+  return <SoundContext.Provider value={actions}>{children}{soundtrack&&<audio ref={music} src={soundtrack} preload="auto" loop aria-label="Gentle birthday background music"/>}<aside className="sound-control" aria-label="Birthday sound controls" data-sound-armed={armed} data-chimes-played={chimes} data-gift-sounds-played={giftSounds} data-unlock-sounds-played={unlockSounds} data-music-ducked={ducked} data-video-priority={videoActive}>
     <button onClick={()=>{if(!armed&&enabled)beginExperience();else toggleSound();}} aria-pressed={enabled&&armed} aria-label={!armed?'Turn on birthday sounds':enabled?'Mute birthday sounds':'Turn on birthday sounds'}><span aria-hidden="true">{enabled?'♫':'♪'}</span><span>{!armed?'Tap for music':!enabled?'Sound off':videoActive?'Video sound':playing?'Music playing':'Soft chimes'}</span></button>
     <label><span className="sr-only">Sound volume</span><input aria-label="Sound volume" type="range" min="0" max="1" step="0.01" value={volume} onChange={changeVolume} aria-valuetext={`${Math.round(volume*100)} percent`}/></label>
     {soundtrack&&<a className="music-credit-link" href="music-credits.html" target="_blank" rel="noreferrer" aria-label="Background music credits">Credits</a>}
